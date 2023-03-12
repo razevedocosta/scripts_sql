@@ -1,0 +1,40 @@
+-- m5_a16_sql1 : Quais são os agricultores que mais vendem por segmento?
+WITH vendas_agricultores AS (
+	SELECT
+	a.agricultor_id,
+	a.nome,
+	a.segmento,
+	SUM(preco) as vendas
+	FROM ordens o
+	LEFT JOIN agricultores a ON o.agricultor_id = a.agricultor_id
+	GROUP BY 1,2,3
+)
+SELECT
+agricultor_id,
+nome,
+segmento,
+vendas,
+RANK() OVER(PARTITION BY segmento ORDER BY vendas DESC) as rank
+FROM vendas_agricultores
+
+--m5_a16_sql2 : Quais são os agricultores que mais vendem por segmento e cidade?
+WITH vendas_agricultores AS (
+	SELECT
+	a.agricultor_id,
+	a.nome,
+	a.segmento,
+	c.nome as cidade,
+	SUM(preco) as total_vendas
+	FROM ordens o
+	LEFT JOIN agricultores a ON o.agricultor_id = a.agricultor_id
+	LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+	GROUP BY 1,2,3,4
+)
+SELECT
+agricultor_id,
+nome,
+segmento,
+cidade,
+total_vendas,
+RANK() OVER(PARTITION BY segmento, cidade ORDER BY total_vendas DESC) as rank
+FROM vendas_agricultores

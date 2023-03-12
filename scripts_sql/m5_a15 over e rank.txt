@@ -1,0 +1,12 @@
+-- m5_a15_sql1 : 
+SELECT
+data,
+ROUND(AVG(unidade) OVER(),2) AS unidades
+FROM ordens
+
+-- m5_a15_sql2 : Criar um ranking de acordo com o total de unidades
+SELECT
+data,
+unidade,
+RANK() OVER(ORDER BY unidade DESC) AS rank_unidades
+FROM ordens

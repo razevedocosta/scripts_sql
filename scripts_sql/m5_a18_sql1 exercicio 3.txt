@@ -1,0 +1,20 @@
+-- m5_a18_sql : Descobrir o produto preferido de cada cliente
+WITH window_rank AS (
+SELECT
+o.cliente_id,
+o.produto_id,
+COUNT(ordem_id),
+ROW_NUMBER() OVER(PARTITION BY o.cliente_id ORDER BY COUNT(ordem_id) DESC) as ranking
+FROM ordens o
+GROUP BY 1,2
+)
+
+SELECT
+w.cliente_id,
+CONCAT(cl.nome, ' ', cl.sobrenome) AS cliente,
+w.produto_id,
+p.name
+FROM window_rank w
+JOIN clientes cl ON cl.cliente_id = w.cliente_id
+JOIN produtos p ON p.produto_id = w.produto_id
+WHERE ranking = 1

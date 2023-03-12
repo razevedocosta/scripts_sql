@@ -1,0 +1,69 @@
+-- m5_a17_sql1 : SOMA
+SELECT
+o.ordem_id,
+o.data,
+c.nome as cidade,
+o.preco,
+SUM(preco) OVER(PARTITION BY c.nome) as total_cidade
+FROM ordens o
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+
+-- m5_a17_sql2 : PREÇO MEDIO das ordens efetuadas por cidade
+SELECT
+o.ordem_id,
+o.data,
+c.nome as cidade,
+o.preco,
+AVG(preco) OVER(PARTITION BY c.nome) as total_cidade
+FROM ordens o
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+
+-- m5_a17_sql3 : MÁXIMO das ordens por cidade
+SELECT
+o.ordem_id,
+o.data,
+c.nome as cidade,
+o.preco,
+MAX(preco) OVER(PARTITION BY c.nome) as total_cidade
+FROM ordens o
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+
+-- m5_a17_sql4 : MINIMO das ordens por cidade
+SELECT
+o.ordem_id,
+o.data,
+c.nome as cidade,
+o.preco,
+MIN(preco) OVER(PARTITION BY c.nome) as total_cidade
+FROM ordens o
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+
+-- m5_a17_sql5 : ROW NUMBER (Data em que cada agricultor vendeu mais)
+SELECT
+o.ordem_id,
+o.data,
+a.nome as agricultor,
+ROW_NUMBER() OVER(PARTITION BY a.nome ORDER BY COUNT(ordem_id) DESC) as ranking
+FROM ordens o
+LEFT JOIN agricultores a ON a.agricultor_id = o.agricultor_id
+GROUP BY 1,2,3
+
+-- m5_a17_sql6 : Qual é o produto favorito de cada cliente?
+WITH window_rank AS (
+SELECT
+o.cliente_id,
+o.produto_id,
+COUNT(ordem_id),
+ROW_NUMBER() OVER(PARTITION BY o.cliente_id ORDER BY COUNT(ordem_id) DESC) as ranking
+FROM ordens o
+GROUP BY 1,2
+)
+SELECT
+w.cliente_id,
+CONCAT(cl.nome, ' ', cl.sobrenome) AS cliente,
+w.produto_id,
+p.nome
+FROM window_rank w
+JOIN clientes cl ON cl.cliente_id = w.cliente_id
+JOIN produtos p ON p.produto_id = w.produto_id
+WHERE ranking = 1

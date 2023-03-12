@@ -1,0 +1,40 @@
+-- m2_a4_sql1 : Listagem de todos os registros da tabela agricultores
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+
+-- m2_a4_sql2 : Listar os 5 primeiros registros da tabela
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+LIMIT 5
+
+-- m2_a4_sql3 : Listar os registros em ordem ascendente
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+ORDER BY nome ASC
+
+-- m2_a4_sql4 : Buscar os registros com nome igual a Ana ou sobrenome igual a Silva
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+WHERE nome = 'Ana' OR sobrenome = 'Silva'
+
+-- m2_a4_sql5 : Retornar os registros com cidade_id entre 1 e 5 usando BETWEEN
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+WHERE cidade_id BETWEEN 1 AND 5
+
+-- m2_a4_sql6 : Retornar os registros com cidade_id entre 1 e 5 usando IN
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+WHERE cidade_id IN (1,2,3,4,5)
+
+-- m2_a4_sql7 : Retornar os nomes que começam com a letra A
+SELECT agricultor_id, nome, sobrenome, segmento, cidade_id 
+FROM agricultores
+WHERE nome LIKE 'A%'
+
+-- m2_a4_sql8 : Recuperar todos registros (com exceção do segmento médio), agrupados e ordenados pelo segmento
+SELECT agricultor_id, nome, sobrenome, segmento
+FROM agricultores
+WHERE segmento NOT LIKE '%medio%'
+GROUP BY agricultor_id, nome, sobrenome, segmento
+ORDER BY segmento, nome ASC

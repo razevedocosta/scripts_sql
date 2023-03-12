@@ -1,0 +1,45 @@
+-- m4_a12_sql1 : Quantas ordens por mês houve no Brasil?
+SELECT
+EXTRACT(MONTH FROM data) AS mes,
+COUNT(ordem_id)
+FROM ordens o
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+WHERE pais = 'brasil'
+GROUP BY 1
+
+-- m4_a12_sql2 : Quantas ordens por mês houve no Brasil?
+WITH cidades_brasil AS  (
+	SELECT
+	cidade_id,
+	nome
+	FROM cidades
+	WHERE pais = 'brasil'
+)
+SELECT
+EXTRACT(MONTH FROM data) AS mes,
+COUNT(ordem_id) AS total_ordens
+FROM ordens o
+INNER JOIN cidades_brasil cb ON cb.cidade_id = o.cidade_id
+GROUP BY 1
+ORDER BY 1
+
+-- m4_a12_sql3 : Quantas ordens maiores que a média do preço são originadas de agricultores do tipo pequeno?
+WITH ordens_grandes AS (
+	SELECT
+	*
+	FROM ordens
+	WHERE
+	preco > (SELECT AVG(preco) FROM ordens)
+),
+agricultores_pequenos AS (
+	SELECT
+	*
+	FROM agricultores
+	WHERE segmento = 'pequeno'
+)
+SELECT
+CONCAT(ac.nome, ' ', ac.sobrenome) AS nome_agricultor,
+COUNT(og.ordem_id) as total_ordens
+FROM ordens_grandes og
+INNER JOIN agricultores_pequenos ac ON ac.agricultor_id = og.agricultor_id
+GROUP BY 1

@@ -1,0 +1,50 @@
+-- m4_a11_sql1 : Total de ordens de cada agricultor do país Argentina
+SELECT
+a.agricultor_id,
+CONCAT(a.nome, ' ', a.sobrenome) AS agricultor,
+COUNT(ordem_id) AS total_ordens
+FROM ordens o
+LEFT JOIN agricultores a ON a.agricultor_id = o.agricultor_id
+LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+WHERE a.agricultor_id IS NOT NULL
+AND pais = 'argentina'
+GROUP BY 1,2
+
+-- m4_a11_sql2 : Total de ordens de cada agricultor do país Argentina com subconsulta no WHERE
+SELECT
+a.agricultor_id,
+CONCAT(a.nome, ' ', a.sobrenome) AS agricultor,
+COUNT(ordem_id) AS total_ordens
+FROM ordens o
+LEFT JOIN agricultores a ON a.agricultor_id = o.agricultor_id
+--LEFT JOIN cidades c ON c.cidade_id = o.cidade_id
+WHERE a.agricultor_id IS NOT NULL
+AND o.cidade_id IN (SELECT cidade_id FROM cidades WHERE pais = 'argentina')
+GROUP BY 1,2
+
+-- m4_a11_sql3 : Exibir os nomes dos agricultores que venderam tomate
+SELECT DISTINCT
+agricultor
+FROM (
+	SELECT
+	o.ordem_id,
+	p.nome as produto,
+	CONCAT(a.nome, ' ', a.sobrenome) AS agricultor
+	FROM ordens o
+	LEFT JOIN agricultores a ON a.agricultor_id = o.agricultor_id
+	LEFT JOIN produtos p ON p.produto_id = o.produto_id
+) AS a
+WHERE
+produto = 'tomate'
+
+-- m4_a11_sql4 : Retornar o total de unidades vendidas
+SELECT DISTINCT
+cliente_id, nome,
+(SELECT SUM(unidade) 
+ FROM ordens 
+ WHERE ordens.cliente_id = clientes.cliente_id) AS total_clientes
+FROM clientes
+ORDER BY 1
+
+-- m4_a11_sql5 : Consulta para verificar o total de unidades obtidos
+select * from ordens where cliente_id = 2;

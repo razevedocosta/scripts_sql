@@ -1,0 +1,7 @@
+-- m3_a9_sql1 : cross join
+select
+p.nome as produto,
+c.nome as cidade
+from cidades c
+cross join produtos p
+order by 1 asc;

@@ -1,0 +1,57 @@
+-- m3_a8_sql1 : exemplo inner join
+select 
+c.nome as cliente, 
+a.nome as agricultor
+from clientes c
+inner join agricultores a 
+on a.nome = c.nome
+order by 1 asc
+
+-- m3_a8_sql2 : exemplo left join
+select 
+c.nome as cliente, 
+a.nome as agricultor
+from clientes c
+left join agricultores a 
+on a.nome = c.nome
+order by 1 asc
+
+-- m3_a8_sql3 : exemplo right join
+select 
+c.nome as cliente, 
+a.nome as agricultor
+from clientes c
+right join agricultores a 
+on a.nome = c.nome
+order by 1 asc
+
+-- m3_a8_sql4 : listar todas as ordens realizadas pelos clientes
+select 
+c.nome as cliente, 
+a.nome as agricultor
+from clientes c
+inner join agricultores a 
+on a.nome = c.nome
+order by 1 asc
+
+-- m3_a8_sql5 : listar todos os clientes que tem ordens ou não
+select 
+ordem_id,
+data,
+c.cliente_id as id, 
+c.nome as nome,
+c.sobrenome as sobrenome
+from ordens o
+right join clientes c on c.cliente_id = o.cliente_id
+order by 3 desc
+
+-- m3_a8_sql6 : listar todos os clientes com ordens ou não
+select 
+ordem_id,
+data,
+c.cliente_id as id, 
+c.nome as nome,
+c.sobrenome as sobrenome
+from ordens o
+full outer join clientes c on c.cliente_id = o.cliente_id
+order by 3 desc

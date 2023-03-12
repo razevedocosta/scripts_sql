@@ -1,0 +1,8 @@
+-- m3_a7_sql1 : exemplo inner join
+select 
+c.nome as cliente, 
+a.nome as agricultor
+from clientes c
+inner join agricultores a 
+on a.nome = c.nome
+order by 1 asc

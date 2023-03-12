@@ -1,0 +1,24 @@
+-- m2_a5_sql1 : Exibir a quantidade de registros de uma tabela
+SELECT COUNT(*) total
+FROM ordens
+
+-- m2_a5_sql2 : 
+SELECT COUNT(ordem_id) total
+FROM ordens
+
+-- m2_a5_sql3 : Exibir o somatório do campo preço
+SELECT SUM(preco) valor_total
+FROM ordens
+
+-- m2_a5_sql4 : Exibir valores máximo e mínimo
+SELECT MIN(preco) preco_min, MAX(preco) preco_maximo
+FROM ordens
+
+-- m2_a5_sql5 : Exibir preço mínimo, máximo e média
+SELECT MIN(preco) preco_minimo, MAX(preco) preco_maximo, ROUND(AVG(preco),2) media
+FROM ordens
+
+-- m2_a5_sql6 : Exibir a quantidade de agricultores por segmento
+SELECT segmento, COUNT(agricultor_id) total
+FROM agricultores
+GROUP BY segmento

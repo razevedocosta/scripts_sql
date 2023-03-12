@@ -1,0 +1,55 @@
+-- m6_a19_sql1 : Faturamento total
+SELECT
+SUM(preco) as total
+FROM ordens o
+
+-- m6_a19_sql2 : Retornar os clientes que mais fizeram compras
+SELECT
+CONCAT(c.nome, ' ',c.sobrenome) AS cliente,
+SUM(preco) as total
+FROM ordens o
+LEFT  JOIN clientes c ON c.cliente_id = o.cliente_id
+GROUP BY 1
+ORDER BY 2 DESC
+
+-- m6_a19_sql3 : Total e quantidade total de ordens realizadas
+SELECT
+CONCAT(c.nome, ' ',c.sobrenome) AS cliente,
+SUM(preco) as total,
+COUNT(ordem_id) as ordens
+FROM ordens o
+LEFT  JOIN clientes c ON c.cliente_id = o.cliente_id
+GROUP BY 1
+ORDER BY 3 DESC
+
+-- m6_a19_sql4 : ticket medio por cliente
+SELECT
+CONCAT(c.nome, ' ',c.sobrenome) AS cliente,
+SUM(preco) as total,
+COUNT(ordem_id) as ordens,
+SUM(preco)/COUNT(ordem_id) as ticket
+FROM ordens o
+LEFT  JOIN clientes c ON c.cliente_id = o.cliente_id
+GROUP BY 1
+ORDER BY 4 DESC
+
+-- m6_a19_sql5 : Descobrir a quantidade e o total de vendas por mês
+SELECT
+EXTRACT(MONTH FROM data) as mes,
+TO_CHAR(data, 'Month') as mes,
+COUNT(ordens) as ordens,
+SUM(unidade) as unidades_vendidas,
+SUM(preco) as vendas
+FROM ordens
+GROUP BY 1,2
+ORDER BY 4 DESC
+
+-- m6_a19_sql6 : Descobrir a quantidade e o total de vendas por dia
+SELECT
+EXTRACT(DAY FROM data) as mes,
+COUNT(ordens) as ordens,
+SUM(unidade) as unidades_vendidas,
+SUM(preco) as vendas
+FROM ordens
+GROUP BY 1
+ORDER BY 4 DESC

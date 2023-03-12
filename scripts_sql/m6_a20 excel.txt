@@ -1,0 +1,36 @@
+-- m6_a20_sql1 : Para cada cliente contamos o total de ordens
+WITH ordens_clientes AS (
+	SELECT
+	c.cliente_id,
+	COUNT(ordem_id) as ordens
+	FROM clientes c
+	LEFT JOIN ordens o ON c.cliente_id= o.cliente_id
+	GROUP BY 1
+	ORDER BY 1
+)
+SELECT
+COUNT(CASE WHEN ordens = 0 THEN cliente_id ELSE NULL END) AS zero_ordens,
+COUNT(CASE WHEN ordens = 1 THEN cliente_id ELSE NULL END) AS uma_ordem,
+COUNT(CASE WHEN ordens = 2 THEN cliente_id ELSE NULL END) AS duas_ordens,
+COUNT(CASE WHEN ordens = 3 THEN cliente_id ELSE NULL END) AS tres_ordens,
+COUNT(CASE WHEN ordens >= 4 THEN cliente_id ELSE NULL END) AS quatro_ou_mais_ordens
+FROM ordens_clientes
+
+-- m6_a20_sql2 : Para cada cliente contamos o total de ordens
+WITH ordens_clientes AS (
+	SELECT
+	c.cliente_id,
+	COUNT(ordem_id) as ordens
+	FROM clientes c
+	LEFT JOIN ordens o ON c.cliente_id= o.cliente_id
+	WHERE data >= '2021-06-01'
+	GROUP BY 1
+	ORDER BY 1
+)
+SELECT
+COUNT(CASE WHEN ordens = 0 THEN cliente_id ELSE NULL END) AS zero_ordens,
+COUNT(CASE WHEN ordens = 1 THEN cliente_id ELSE NULL END) AS uma_ordem,
+COUNT(CASE WHEN ordens = 2 THEN cliente_id ELSE NULL END) AS duas_ordens,
+COUNT(CASE WHEN ordens = 3 THEN cliente_id ELSE NULL END) AS tres_ordens,
+COUNT(CASE WHEN ordens >= 4 THEN cliente_id ELSE NULL END) AS quatro_ou_mais_ordens
+FROM ordens_clientes

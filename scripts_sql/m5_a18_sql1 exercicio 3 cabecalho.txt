@@ -1,0 +1,20 @@
+-- m5_a18_sql : Descobrir o produto preferido de cada cliente
+WITH window_rank AS (
+SELECT
+o.cliente_id,
+o.produto_id,
+COUNT(ordem_id),
+-- usar row_number, over e partition para conseguir ordenar os elementos
+FROM ordens o
+GROUP BY 1,2
+)
+
+SELECT
+w.cliente_id,
+CONCAT(cl.nome, ' ', cl.sobrenome) AS cliente,
+w.produto_id,
+p.name
+-- usar a window function na cláusula FROM
+-- join com a tabela de clientes 
+-- join com a tabela de produtos 
+WHERE ranking = 1
